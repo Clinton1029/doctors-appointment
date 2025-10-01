@@ -6,7 +6,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative py-24 overflow-hidden bg-gradient-to-r from-blue-950 via-cyan-900 to-indigo-950 text-white"
+      className="relative py-28 overflow-hidden bg-gradient-to-r from-blue-950 via-cyan-900 to-indigo-950 text-white"
     >
       {/* Floating Glow Blobs */}
       <div className="absolute inset-0 overflow-hidden">
@@ -22,6 +22,7 @@ export default function About() {
         />
       </div>
 
+      {/* Content Container */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-12 md:gap-24">
         {/* Left Text Column */}
         <motion.div
@@ -63,10 +64,10 @@ export default function About() {
         >
           <div className="relative w-full max-w-md mx-auto md:mx-0">
             <motion.img
-              src="/team2.png" // Replace with your illustration/doctor image
+              src="/team2.png"
               alt="Medical Team"
               className="w-full rounded-xl shadow-2xl object-contain"
-              animate={{ y: [0, -10, 0] }} // subtle floating effect
+              animate={{ y: [0, -10, 0] }}
               transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
             />
             {/* Glowing Accent Circles */}
