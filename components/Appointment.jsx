@@ -66,9 +66,10 @@ export default function Appointment() {
               </label>
             </div>
 
+            {/* Premium CTA Button */}
             <button
               type="submit"
-              className="md:col-span-2 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 py-3 rounded-full font-semibold text-white shadow-[0_0_30px_rgba(59,130,246,0.8)] hover:shadow-[0_0_50px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
+              className="md:col-span-2 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 py-2.5 px-6 rounded-full font-semibold text-white text-lg shadow-[0_0_20px_rgba(59,130,246,0.7)] hover:shadow-[0_0_40px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
             >
               Book Appointment
             </button>
