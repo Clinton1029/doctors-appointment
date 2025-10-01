@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("Home");
-  const [theme, setTheme] = useState("light");
   const [progress, setProgress] = useState(0);
 
   const links = [
@@ -23,7 +22,7 @@ export default function Navbar() {
   // Handle scroll
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      setScrolled(window.scrollY > 60);
 
       // progress bar
       const totalHeight = document.body.scrollHeight - window.innerHeight;
@@ -48,17 +47,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Toggle dark/light theme
-  const toggleTheme = () => {
-    if (theme === "light") {
-      document.documentElement.classList.add("dark");
-      setTheme("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      setTheme("light");
-    }
-  };
-
   return (
     <>
       {/* Scroll Progress Bar */}
@@ -71,15 +59,17 @@ export default function Navbar() {
       <nav
         className={`fixed w-full top-0 z-50 transition-all duration-700 ${
           scrolled
-            ? "bg-gradient-to-r from-blue-700 via-cyan-600 to-indigo-700 bg-[length:300%_300%] animate-gradient backdrop-blur-lg shadow-xl border-b border-cyan-400/40"
-            : "bg-transparent"
+            ? "bg-gradient-to-r from-blue-700 via-cyan-700 to-indigo-800 shadow-2xl py-3"
+            : "bg-transparent py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4 animate-fade-in">
+        <div className="max-w-7xl mx-auto flex justify-between items-center px-6 transition-all duration-500">
           {/* Logo */}
           <a
             href="#home"
-            className="text-2xl font-extrabold tracking-wide bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500 text-transparent bg-clip-text drop-shadow-[0_0_15px_rgba(56,189,248,0.8)]"
+            className={`font-extrabold tracking-wide bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500 text-transparent bg-clip-text drop-shadow-[0_0_15px_rgba(56,189,248,0.8)] transition-all duration-500 ${
+              scrolled ? "text-xl" : "text-2xl"
+            }`}
           >
             Medical<span className="text-white">Center</span>
           </a>
@@ -115,18 +105,6 @@ export default function Navbar() {
             >
               Book Appointment
             </a>
-
-            {/* Dark Mode Toggle */}
-            <button
-              onClick={toggleTheme}
-              className="ml-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition"
-            >
-              {theme === "light" ? (
-                <Moon size={20} className="text-white" />
-              ) : (
-                <Sun size={20} className="text-yellow-300" />
-              )}
-            </button>
           </div>
 
           {/* Mobile Toggle */}
@@ -144,7 +122,7 @@ export default function Navbar() {
             isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <ul className="flex flex-col items-center bg-gradient-to-br from-blue-800 via-cyan-700 to-indigo-800 bg-[length:300%_300%] animate-gradient backdrop-blur-lg shadow-lg shadow-blue-400/40 px-6 py-8 space-y-6">
+          <ul className="flex flex-col items-center bg-gradient-to-br from-blue-800 via-cyan-700 to-indigo-900 shadow-xl px-6 py-8 space-y-6">
             {links.map((link) => (
               <li key={link.name}>
                 <a
