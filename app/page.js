@@ -8,6 +8,7 @@ import Doctors from "@/components/Doctors";
 import Appointment from "@/components/Appointment";
 import Blog from "@/components/Blog";
 import Contact from "@/components/Contact";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <Appointment />
       <Blog />
       <Contact />
+      <Footer />
     </main>
   );
 }
