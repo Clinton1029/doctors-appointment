@@ -1,113 +1,119 @@
 "use client";
-import Link from "next/link";
+
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react"; // icons
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
+  const [active, setActive] = useState("home");
 
+  const links = [
+    { name: "Home", href: "#home" },
+    { name: "About", href: "#about" },
+    { name: "Services", href: "#services" },
+    { name: "Doctors", href: "#doctors" },
+    { name: "Appointment", href: "#appointment" },
+    { name: "Blog", href: "#blog" },
+    { name: "Contact", href: "#contact" },
+  ];
+
+  // Add shadow when scrolling
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      setScrolled(window.scrollY > 20);
+
+      // Update active link based on scroll position
+      const positions = links.map((link) => {
+        const section = document.querySelector(link.href);
+        if (section) {
+          return {
+            name: link.name,
+            offset: section.offsetTop,
+            height: section.offsetHeight,
+          };
+        }
+        return null;
+      });
+
+      const scrollPos = window.scrollY + 100;
+      positions.forEach((pos) => {
+        if (pos && scrollPos >= pos.offset && scrollPos < pos.offset + pos.height) {
+          setActive(pos.name);
+        }
+      });
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Book Appointment", path: "/booking" },
-    { name: "Doctors", path: "/doctors" },
-    { name: "Login", path: "/auth/login" },
-  ];
-
   return (
     <nav
-      className={`w-full fixed top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-gradient-to-r from-blue-900/90 to-indigo-900/90 backdrop-blur-md shadow-xl py-2"
-          : "bg-gradient-to-r from-blue-900 to-indigo-900 py-4 shadow-md"
+      className={`fixed w-full top-0 z-50 transition-all ${
+        scrolled ? "bg-white shadow-md" : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
         {/* Logo */}
-        <Link
-          href="/"
-          className="text-2xl md:text-3xl font-extrabold text-white tracking-wide hover:scale-105 transition"
+        <a
+          href="#home"
+          className="text-2xl font-bold text-blue-600 tracking-wide"
         >
-          🏥 DoctorsApp
-        </Link>
+          Medical<span className="text-gray-800">Center</span>
+        </a>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8 font-bold">
-          {navLinks.map((link, i) => (
-            <Link
-              key={i}
-              href={link.path}
-              className={`relative text-white transition group ${
-                pathname === link.path ? "text-yellow-400" : "hover:text-yellow-400"
-              }`}
-            >
-              {link.name}
-              {/* Fancy underline hover effect */}
-              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-400 transition-all group-hover:w-full"></span>
-            </Link>
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex space-x-6">
+          {links.map((link) => (
+            <li key={link.name}>
+              <a
+                href={link.href}
+                className={`transition font-medium ${
+                  active === link.name
+                    ? "text-blue-600"
+                    : "text-gray-700 hover:text-blue-500"
+                }`}
+              >
+                {link.name}
+              </a>
+            </li>
           ))}
-          {/* CTA */}
-          <Link
-            href="/auth/register"
-            className="ml-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 px-5 py-2 rounded-lg shadow-lg hover:scale-105 transition"
-          >
-            Register
-          </Link>
-        </div>
+        </ul>
 
         {/* Mobile Toggle */}
         <button
-          className="md:hidden text-white"
+          className="md:hidden text-gray-700"
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle Menu"
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-gradient-to-r from-blue-800 to-indigo-800 px-6 py-6 space-y-6 font-bold text-white"
-          >
-            {navLinks.map((link, i) => (
-              <Link
-                key={i}
-                href={link.path}
-                className={`block ${
-                  pathname === link.path ? "text-yellow-400" : "hover:text-yellow-400"
-                }`}
+      <div
+        className={`md:hidden bg-white shadow-lg transition-all duration-300 overflow-hidden ${
+          isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <ul className="flex flex-col px-6 py-4 space-y-4">
+          {links.map((link) => (
+            <li key={link.name}>
+              <a
+                href={link.href}
                 onClick={() => setIsOpen(false)}
+                className={`block font-medium ${
+                  active === link.name
+                    ? "text-blue-600"
+                    : "text-gray-700 hover:text-blue-500"
+                }`}
               >
                 {link.name}
-              </Link>
-            ))}
-            <Link
-              href="/auth/register"
-              className="block bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 px-5 py-3 rounded-lg shadow-lg hover:scale-105 transition text-center"
-              onClick={() => setIsOpen(false)}
-            >
-              Register
-            </Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   );
 }
