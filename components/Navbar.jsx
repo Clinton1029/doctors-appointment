@@ -1,57 +1,76 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 30);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Book Appointment", href: "/booking" },
-    { name: "Doctors", href: "/doctors" },
-    { name: "Login", href: "/auth/login" },
+    { name: "Home", path: "/" },
+    { name: "Book Appointment", path: "/booking" },
+    { name: "Doctors", path: "/doctors" },
+    { name: "Login", path: "/auth/login" },
   ];
 
   return (
-    <nav className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    <nav
+      className={`w-full fixed top-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-gradient-to-r from-blue-900/90 to-indigo-900/90 backdrop-blur-md shadow-xl py-2"
+          : "bg-gradient-to-r from-blue-900 to-indigo-900 py-4 shadow-md"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         {/* Logo */}
         <Link
           href="/"
-          className="text-2xl font-extrabold text-white flex items-center gap-2"
+          className="text-2xl md:text-3xl font-extrabold text-white tracking-wide hover:scale-105 transition"
         >
           🏥 DoctorsApp
         </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex gap-8 items-center">
-          {navLinks.map((link, idx) => (
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-8 font-bold">
+          {navLinks.map((link, i) => (
             <Link
-              key={idx}
-              href={link.href}
-              className="relative text-white/90 hover:text-white font-medium transition group"
+              key={i}
+              href={link.path}
+              className={`relative text-white transition group ${
+                pathname === link.path ? "text-yellow-400" : "hover:text-yellow-400"
+              }`}
             >
               {link.name}
-              {/* Underline effect */}
-              <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-white transition-all group-hover:w-full" />
+              {/* Fancy underline hover effect */}
+              <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-yellow-400 transition-all group-hover:w-full"></span>
             </Link>
           ))}
-
-          {/* Sign Up CTA */}
+          {/* CTA */}
           <Link
             href="/auth/register"
-            className="ml-4 px-5 py-2 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition"
+            className="ml-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 px-5 py-2 rounded-lg shadow-lg hover:scale-105 transition"
           >
-            Sign Up
+            Register
           </Link>
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile Toggle */}
         <button
-          className="md:hidden text-white hover:text-gray-200 transition"
+          className="md:hidden text-white"
           onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle Menu"
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -64,26 +83,27 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 shadow-lg px-6 py-4 space-y-4"
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-gradient-to-r from-blue-800 to-indigo-800 px-6 py-6 space-y-6 font-bold text-white"
           >
-            {navLinks.map((link, idx) => (
+            {navLinks.map((link, i) => (
               <Link
-                key={idx}
-                href={link.href}
+                key={i}
+                href={link.path}
+                className={`block ${
+                  pathname === link.path ? "text-yellow-400" : "hover:text-yellow-400"
+                }`}
                 onClick={() => setIsOpen(false)}
-                className="block text-white/90 font-medium hover:text-white transition"
               >
                 {link.name}
               </Link>
             ))}
-
-            {/* Sign Up CTA in mobile */}
             <Link
               href="/auth/register"
+              className="block bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 px-5 py-3 rounded-lg shadow-lg hover:scale-105 transition text-center"
               onClick={() => setIsOpen(false)}
-              className="block text-center px-5 py-2 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition"
             >
-              Sign Up
+              Register
             </Link>
           </motion.div>
         )}
