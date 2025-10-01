@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { FaStethoscope, FaHeartbeat, FaSyringe } from "react-icons/fa";
 
 export default function Appointment() {
   return (
@@ -77,7 +78,7 @@ export default function Appointment() {
           </div>
         </motion.div>
 
-        {/* Illustration / Image Card */}
+        {/* Illustration / Image Card with Animated Icons */}
         <motion.div
           className="flex-1 relative rounded-3xl overflow-hidden min-h-[600px] shadow-[0_10px_40px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
           initial={{ opacity: 0, x: 50 }}
@@ -90,6 +91,30 @@ export default function Appointment() {
             alt="Appointment"
             className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
           />
+
+          {/* Animated Floating Icons */}
+          <motion.div
+            className="absolute top-10 left-8 text-cyan-400 text-2xl"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ repeat: Infinity, duration: 3 }}
+          >
+            <FaStethoscope />
+          </motion.div>
+          <motion.div
+            className="absolute bottom-16 right-10 text-pink-400 text-2xl"
+            animate={{ y: [0, 12, 0] }}
+            transition={{ repeat: Infinity, duration: 4 }}
+          >
+            <FaHeartbeat />
+          </motion.div>
+          <motion.div
+            className="absolute top-1/2 right-12 text-indigo-400 text-2xl"
+            animate={{ y: [0, -15, 0] }}
+            transition={{ repeat: Infinity, duration: 5 }}
+          >
+            <FaSyringe />
+          </motion.div>
+
           {/* Floating gradient circles for premium effect */}
           <div className="absolute -top-12 -left-12 w-32 h-32 rounded-full bg-cyan-400/20 blur-3xl animate-pulse pointer-events-none"></div>
           <div className="absolute -bottom-12 -right-12 w-24 h-24 rounded-full bg-indigo-500/20 blur-3xl animate-pulse pointer-events-none"></div>
