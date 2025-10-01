@@ -87,7 +87,7 @@ export default function Appointment() {
           transition={{ duration: 1 }}
         >
           <img
-            src="/contact_form.png"
+            src="/startup.png"
             alt="Appointment"
             className="w-full h-full object-cover rounded-3xl hover:scale-105 transition-transform duration-700"
           />
