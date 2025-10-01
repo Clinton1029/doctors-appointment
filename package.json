@@ -12,10 +12,13 @@
     "@tanstack/react-query": "^5.90.2",
     "axios": "^1.12.2",
     "framer-motion": "^12.23.22",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.544.0",
     "next": "15.5.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-tsparticles": "^2.12.2",
+    "tsparticles": "^3.9.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

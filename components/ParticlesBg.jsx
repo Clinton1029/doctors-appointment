@@ -2,7 +2,10 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import Lottie from "lottie-react";
 import Navbar from "@/components/Navbar";
+import ParticlesBg from "@/components/ParticlesBg";
+import doctorAnimation from "@/public/doctor-animation.json";
 
 export default function HomePage() {
   // Animated counters
@@ -26,50 +29,66 @@ export default function HomePage() {
 
       {/* Hero Section */}
       <motion.section
-        className="relative w-full text-center py-28 px-6 bg-gradient-to-r from-blue-600 via-indigo-700 to-purple-700 text-white overflow-hidden"
+        className="relative w-full py-28 px-6 bg-gradient-to-r from-blue-600 via-indigo-700 to-purple-700 text-white overflow-hidden flex flex-col lg:flex-row items-center justify-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        {/* Floating Blobs */}
+        {/* Particles Background */}
+        <ParticlesBg />
+
+        {/* Gradient Blobs */}
         <div className="absolute top-0 left-0 w-72 h-72 bg-blue-400 opacity-20 rounded-full mix-blend-multiply blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500 opacity-20 rounded-full mix-blend-multiply blur-3xl animate-pulse"></div>
 
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight relative z-10">
-          Smarter Healthcare, <br />
-          <span className="text-yellow-400">Simplified Booking</span>
-        </h1>
-        <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl mx-auto relative z-10">
-          Book appointments with trusted doctors in seconds. Anytime. Anywhere.
-        </p>
+        {/* Left Content */}
+        <div className="relative z-10 text-center lg:text-left max-w-xl">
+          <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+            Smarter Healthcare, <br />
+            <span className="text-yellow-400">Simplified Booking</span>
+          </h1>
+          <p className="text-lg md:text-xl text-gray-200 mb-8">
+            Book appointments with trusted doctors in seconds. Anytime. Anywhere.
+          </p>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
-          <Link
-            href="/booking"
-            className="bg-yellow-400 text-blue-900 font-semibold px-6 py-3 rounded-lg shadow hover:bg-yellow-500 transition"
-          >
-            Book Appointment
-          </Link>
-          <Link
-            href="/auth/register"
-            className="bg-transparent border border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-blue-700 transition"
-          >
-            Register
-          </Link>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <Link
+              href="/booking"
+              className="bg-yellow-400 text-blue-900 font-semibold px-6 py-3 rounded-lg shadow hover:bg-yellow-500 transition"
+            >
+              Book Appointment
+            </Link>
+            <Link
+              href="/auth/register"
+              className="bg-transparent border border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-blue-700 transition"
+            >
+              Register
+            </Link>
+          </div>
+
+          {/* Search Bar */}
+          <div className="mt-10 flex flex-col sm:flex-row justify-center lg:justify-start relative z-10 max-w-lg">
+            <input
+              type="text"
+              placeholder="🔍 Search doctors, specialties..."
+              className="w-full px-5 py-3 rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none focus:outline-none text-gray-700"
+            />
+            <button className="bg-yellow-400 px-6 py-3 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none font-semibold hover:bg-yellow-500">
+              Search
+            </button>
+          </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="mt-10 flex flex-col sm:flex-row justify-center relative z-10 max-w-lg mx-auto">
-          <input
-            type="text"
-            placeholder="🔍 Search doctors, specialties..."
-            className="w-full px-5 py-3 rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none focus:outline-none text-gray-700"
-          />
-          <button className="bg-yellow-400 px-6 py-3 rounded-b-lg sm:rounded-r-lg sm:rounded-bl-none font-semibold hover:bg-yellow-500">
-            Search
-          </button>
-        </div>
+        {/* Right Side Animation */}
+        <motion.div
+          className="w-full lg:w-1/2 mt-12 lg:mt-0 relative z-10"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <Lottie animationData={doctorAnimation} loop={true} />
+        </motion.div>
       </motion.section>
 
       {/* Stats Section */}
