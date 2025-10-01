@@ -10,24 +10,21 @@ export default function Hero() {
   const [subIndex, setSubIndex] = useState(0);
   const [deleting, setDeleting] = useState(false);
 
-  // Smooth typewriter effect
+  // Typewriter effect
   useEffect(() => {
     if (subIndex === phrases[index].length + 1 && !deleting) {
-      setTimeout(() => setDeleting(true), 1500); // pause before deleting
+      setTimeout(() => setDeleting(true), 1800); // pause before deleting
       return;
     }
-
     if (subIndex === 0 && deleting) {
       setDeleting(false);
       setIndex((prev) => (prev + 1) % phrases.length);
       return;
     }
-
     const timeout = setTimeout(() => {
       setSubIndex((prev) => prev + (deleting ? -1 : 1));
       setDisplayText(phrases[index].substring(0, subIndex));
-    }, deleting ? 100 : 180); // slower typing
-
+    }, deleting ? 120 : 200); // slower typing for premium feel
     return () => clearTimeout(timeout);
   }, [subIndex, index, deleting, phrases]);
 
@@ -36,22 +33,22 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-r from-blue-950 via-cyan-900 to-indigo-950"
     >
-      {/* Background Glow Blobs */}
+      {/* Background floating glow blobs */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
           className="w-[600px] h-[600px] bg-cyan-400/20 rounded-full blur-3xl absolute -top-40 -left-40"
-          animate={{ x: [0, 40, 0], y: [0, 20, 0] }}
-          transition={{ repeat: Infinity, duration: 20, ease: "easeInOut" }}
+          animate={{ x: [0, 50, 0], y: [0, 20, 0] }}
+          transition={{ repeat: Infinity, duration: 25, ease: "easeInOut" }}
         />
         <motion.div
           className="w-[500px] h-[500px] bg-indigo-500/20 rounded-full blur-3xl absolute bottom-[-150px] right-[-150px]"
-          animate={{ x: [0, -30, 0], y: [0, 15, 0] }}
-          transition={{ repeat: Infinity, duration: 25, ease: "easeInOut" }}
+          animate={{ x: [0, -40, 0], y: [0, 15, 0] }}
+          transition={{ repeat: Infinity, duration: 28, ease: "easeInOut" }}
         />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col-reverse md:flex-row items-center gap-12 md:gap-24">
+      {/* Content Container */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col-reverse md:flex-row items-center gap-12 md:gap-24 pt-28 md:pt-0">
         {/* Left Text Column */}
         <motion.div
           className="flex-1 text-center md:text-left"
@@ -75,7 +72,7 @@ export default function Hero() {
           <div className="mt-8 flex flex-wrap justify-center md:justify-start gap-6">
             <motion.a
               href="#appointment"
-              className="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 font-semibold text-white shadow-[0_0_20px_rgba(59,130,246,0.8)] hover:shadow-[0_0_40px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
+              className="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 font-semibold text-white shadow-[0_0_25px_rgba(59,130,246,0.8)] hover:shadow-[0_0_50px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -99,13 +96,24 @@ export default function Hero() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1 }}
         >
-          <img
+          <motion.img
             src="/gallery6.png"
             alt="Doctor"
             className="w-full max-w-md mx-auto md:mx-0 rounded-xl shadow-2xl object-contain"
+            animate={{ y: [0, -10, 0] }} // subtle floating effect
+            transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
           />
         </motion.div>
       </div>
+
+      {/* Scroll Down Indicator */}
+      <motion.div
+        className="absolute bottom-6 left-1/2 transform -translate-x-1/2"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+      >
+        <div className="w-3 h-3 border-b-2 border-r-2 border-white rotate-45 animate-bounce" />
+      </motion.div>
     </section>
   );
 }
