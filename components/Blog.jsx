@@ -9,7 +9,7 @@ const blogs = [
     image: "/blog1.png",
     excerpt:
       "Discover ways to keep your heart healthy with expert advice and preventive measures.",
-    link: "#",
+    link: "https://www.heartfoundation.org.au/healthy-living/keeping-your-heart-healthy",
   },
   {
     title: "Mental Health Awareness",
@@ -17,7 +17,7 @@ const blogs = [
     image: "/blog2.png",
     excerpt:
       "Learn how to manage stress, anxiety, and boost your mental well-being effectively.",
-    link: "#",
+    link: "https://www.cartercenter.org/health/mental_health/index.html?utm_source=google&utm_medium=cpc&utm_campaign=NonBrand_TCC_Search_Health&utm_term=mental%20health%20awareness&utm_content=mental_health&s_src=peace&amp;s_subsrc=search&gad_source=1&gad_campaignid=26336342&gbraid=0AAAAAD_jeJ4kjDUshaya4WYPPWRQAfTFc&gclid=Cj0KCQjwovPGBhDxARIsAFhgkwQoX2FrnoGfv7YqMhKYxGFa7Hm-7CRTBOgi9Hts_Jrd7QAFQEVZHdkaAp-vEALw_wcB",
   },
   {
     title: "Vaccination Importance",
@@ -25,7 +25,7 @@ const blogs = [
     image: "/blog3.png",
     excerpt:
       "Understand why timely vaccinations are crucial for you and your family’s health.",
-    link: "#",
+    link: "https://www.nfid.org/immunization/10-reasons-to-get-vaccinated/",
   },
 ];
 
@@ -33,9 +33,13 @@ export default function Blog() {
   return (
     <section
       id="blog"
-      className="relative py-28 bg-gray-900 text-white overflow-hidden"
+      className="relative py-28 bg-gradient-to-r from-blue-950 via-cyan-900 to-indigo-950 text-white overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 relative">
+        {/* Floating Gradient Circles */}
+        <div className="absolute top-10 left-10 w-32 h-32 rounded-full bg-cyan-400/20 blur-3xl animate-pulse pointer-events-none"></div>
+        <div className="absolute bottom-10 right-12 w-24 h-24 rounded-full bg-indigo-500/20 blur-3xl animate-pulse pointer-events-none"></div>
+
         {/* Section Header */}
         <motion.h2
           className="text-3xl md:text-5xl font-extrabold text-cyan-400 text-center mb-12 drop-shadow-[0_0_25px_rgba(59,130,246,0.7)]"
