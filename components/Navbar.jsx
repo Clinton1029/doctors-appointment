@@ -1,11 +1,11 @@
 "use client";
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react"; // npm install lucide-react
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -15,75 +15,76 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="w-full bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
+    <nav className="w-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
         <Link
           href="/"
-          className="text-2xl font-extrabold text-blue-600 tracking-wide flex items-center gap-2"
+          className="text-2xl font-extrabold text-white flex items-center gap-2"
         >
           🏥 DoctorsApp
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Menu */}
         <div className="hidden md:flex gap-8 items-center">
-          {navLinks.map((link, i) => (
-            <motion.div key={i} whileHover={{ scale: 1.1 }}>
-              <Link
-                href={link.href}
-                className="relative text-gray-700 font-medium hover:text-blue-600 transition"
-              >
-                {link.name}
-                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-blue-600 transition-all group-hover:w-full"></span>
-              </Link>
-            </motion.div>
+          {navLinks.map((link, idx) => (
+            <Link
+              key={idx}
+              href={link.href}
+              className="relative text-white/90 hover:text-white font-medium transition group"
+            >
+              {link.name}
+              {/* Underline effect */}
+              <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-white transition-all group-hover:w-full" />
+            </Link>
           ))}
+
+          {/* Sign Up CTA */}
           <Link
             href="/auth/register"
-            className="ml-4 bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+            className="ml-4 px-5 py-2 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition"
           >
-            Register
+            Sign Up
           </Link>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Hamburger */}
         <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-gray-700 hover:text-blue-600 transition"
+          className="md:hidden text-white hover:text-gray-200 transition"
+          onClick={() => setIsOpen(!isOpen)}
         >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
-        {menuOpen && (
+        {isOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-white shadow-inner"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400 shadow-lg px-6 py-4 space-y-4"
           >
-            <div className="flex flex-col gap-4 px-6 py-4">
-              {navLinks.map((link, i) => (
-                <Link
-                  key={i}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-gray-700 font-medium hover:text-blue-600 transition"
-                >
-                  {link.name}
-                </Link>
-              ))}
+            {navLinks.map((link, idx) => (
               <Link
-                href="/auth/register"
-                onClick={() => setMenuOpen(false)}
-                className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition text-center"
+                key={idx}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="block text-white/90 font-medium hover:text-white transition"
               >
-                Register
+                {link.name}
               </Link>
-            </div>
+            ))}
+
+            {/* Sign Up CTA in mobile */}
+            <Link
+              href="/auth/register"
+              onClick={() => setIsOpen(false)}
+              className="block text-center px-5 py-2 bg-white text-blue-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition"
+            >
+              Sign Up
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
