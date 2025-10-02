@@ -19,6 +19,17 @@ export default function Navbar() {
     { name: "Contact", href: "#contact" },
   ];
 
+  // ✅ Always go to Hero (#home) when refreshing
+  useEffect(() => {
+    if (window.location.hash !== "#home") {
+      window.history.replaceState(null, null, "#home");
+    }
+    const hero = document.querySelector("#home");
+    if (hero) {
+      hero.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
   // Handle scroll
   useEffect(() => {
     const handleScroll = () => {
@@ -51,7 +62,7 @@ export default function Navbar() {
     <>
       {/* Scroll Progress Bar */}
       <div
-        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 z-[60] transition-all"
+        className="fixed top-0 left-0 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 z-[60] transition-all duration-300"
         style={{ width: `${progress}%` }}
       />
 
@@ -59,15 +70,15 @@ export default function Navbar() {
       <nav
         className={`fixed w-full top-0 z-50 transition-all duration-700 ${
           scrolled
-            ? "bg-gradient-to-r from-blue-700 via-cyan-700 to-indigo-800 shadow-2xl py-3"
+            ? "bg-gradient-to-r from-blue-800 via-cyan-800 to-indigo-900 shadow-2xl py-3"
             : "bg-transparent py-6"
         }`}
       >
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-6 transition-all duration-500">
+        <div className="max-w-7xl mx-auto flex justify-between items-center px-6">
           {/* Logo */}
           <a
             href="#home"
-            className={`font-extrabold tracking-wide bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500 text-transparent bg-clip-text drop-shadow-[0_0_15px_rgba(56,189,248,0.8)] transition-all duration-500 ${
+            className={`font-extrabold tracking-wide bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-500 text-transparent bg-clip-text drop-shadow-[0_0_20px_rgba(56,189,248,0.9)] transition-all ${
               scrolled ? "text-xl" : "text-2xl"
             }`}
           >
@@ -81,15 +92,15 @@ export default function Navbar() {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className={`relative font-semibold tracking-wide transition-all duration-500 ${
+                    className={`relative font-semibold tracking-wide transition-all ${
                       active === link.name
-                        ? "text-white drop-shadow-[0_0_8px_rgba(59,130,246,0.9)]"
-                        : "text-gray-200 hover:text-yellow-200 hover:animate-pulse"
+                        ? "text-white drop-shadow-[0_0_10px_rgba(59,130,246,1)]"
+                        : "text-gray-200 hover:text-yellow-200"
                     }`}
                   >
                     {link.name}
                     <span
-                      className={`absolute left-0 bottom-0 h-[2px] w-0 bg-gradient-to-r from-yellow-400 via-cyan-300 to-blue-400 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)] transition-all duration-500 ${
+                      className={`absolute left-0 bottom-0 h-[2px] w-0 bg-gradient-to-r from-yellow-400 via-cyan-300 to-blue-400 rounded-full transition-all duration-500 ${
                         active === link.name ? "w-full" : "hover:w-full"
                       }`}
                     />
@@ -101,7 +112,7 @@ export default function Navbar() {
             {/* CTA Button */}
             <a
               href="#appointment"
-              className="ml-6 px-5 py-2 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white font-bold shadow-[0_0_15px_rgba(59,130,246,0.7)] hover:shadow-[0_0_30px_rgba(59,130,246,1)] transition-all duration-500"
+              className="ml-6 px-5 py-2 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white font-bold shadow-[0_0_20px_rgba(59,130,246,0.9)] hover:shadow-[0_0_35px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
             >
               Book Appointment
             </a>
@@ -118,20 +129,20 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden transition-all duration-700 ease-in-out overflow-hidden ${
+          className={`md:hidden backdrop-blur-xl bg-gradient-to-br from-blue-900/90 via-cyan-800/90 to-indigo-900/90 shadow-2xl transition-all duration-700 ease-in-out overflow-hidden ${
             isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <ul className="flex flex-col items-center bg-gradient-to-br from-blue-800 via-cyan-700 to-indigo-900 shadow-xl px-6 py-8 space-y-6">
+          <ul className="flex flex-col items-center px-6 py-8 space-y-6">
             {links.map((link) => (
               <li key={link.name}>
                 <a
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`block text-lg font-semibold tracking-wide transition-all duration-500 ${
+                  className={`block text-lg font-semibold tracking-wide transition-all ${
                     active === link.name
-                      ? "text-white drop-shadow-[0_0_8px_rgba(59,130,246,0.9)]"
-                      : "text-gray-200 hover:text-yellow-200 hover:animate-pulse"
+                      ? "text-white drop-shadow-[0_0_10px_rgba(59,130,246,1)]"
+                      : "text-gray-200 hover:text-yellow-200"
                   }`}
                 >
                   {link.name}
@@ -140,7 +151,7 @@ export default function Navbar() {
             ))}
             <a
               href="#appointment"
-              className="mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white font-bold shadow-[0_0_20px_rgba(59,130,246,0.9)] hover:shadow-[0_0_35px_rgba(59,130,246,1)] transition-all duration-500"
+              className="mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white font-bold shadow-[0_0_30px_rgba(59,130,246,0.9)] hover:shadow-[0_0_45px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
             >
               Book Appointment
             </a>
