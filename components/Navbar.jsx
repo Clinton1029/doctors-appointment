@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("Home");
@@ -15,11 +16,11 @@ export default function Navbar() {
     { name: "About", href: "#about" },
     { name: "Services", href: "#services" },
     { name: "Doctors", href: "#doctors" },
+    { name: "Appointment", href: "#appointment" },
     { name: "Blog", href: "#blog" },
     { name: "Contact", href: "#contact" },
   ];
 
-  // ✅ Always go to Hero (#home) when refreshing
   useEffect(() => {
     if (window.location.hash !== "#home") {
       window.history.replaceState(null, null, "#home");
@@ -30,16 +31,13 @@ export default function Navbar() {
     }
   }, []);
 
-  // Handle scroll
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 60);
 
-      // progress bar
       const totalHeight = document.body.scrollHeight - window.innerHeight;
       setProgress((window.scrollY / totalHeight) * 100);
 
-      // active section highlight
       const scrollPos = window.scrollY + 120;
       links.forEach((link) => {
         const section = document.querySelector(link.href);
@@ -109,29 +107,30 @@ export default function Navbar() {
               ))}
             </ul>
 
-            {/* Auth Buttons */}
-            <div className="flex items-center space-x-4 ml-6">
-              <Link
-                href="/login"
-                className="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 text-white font-bold shadow-[0_0_20px_rgba(59,130,246,0.8)] hover:shadow-[0_0_40px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
+            {/* ✅ Auth Buttons */}
+            {!session ? (
+              <>
+                <a
+                  href="/login"
+                  className="ml-6 px-5 py-2 rounded-full bg-cyan-400 text-white font-bold shadow-lg hover:scale-105 transition"
+                >
+                  Login
+                </a>
+                <a
+                  href="/register"
+                  className="ml-3 px-5 py-2 rounded-full bg-indigo-500 text-white font-bold shadow-lg hover:scale-105 transition"
+                >
+                  Register
+                </a>
+              </>
+            ) : (
+              <button
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="ml-6 px-5 py-2 rounded-full bg-red-500 text-white font-bold shadow-lg hover:scale-105 transition"
               >
-                Login
-              </Link>
-              <Link
-                href="/register"
-                className="px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 text-white font-bold shadow-[0_0_20px_rgba(99,102,241,0.8)] hover:shadow-[0_0_40px_rgba(99,102,241,1)] transition-all duration-500 hover:scale-105"
-              >
-                Register
-              </Link>
-            </div>
-
-            {/* CTA Button (disabled if not logged in later) */}
-            <a
-              href="#appointment"
-              className="ml-6 px-5 py-2 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white font-bold shadow-[0_0_20px_rgba(59,130,246,0.9)] hover:shadow-[0_0_35px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
-            >
-              Book Appointment
-            </a>
+                Logout
+              </button>
+            )}
           </div>
 
           {/* Mobile Toggle */}
@@ -166,26 +165,30 @@ export default function Navbar() {
               </li>
             ))}
 
-            {/* Auth buttons (mobile) */}
-            <Link
-              href="/login"
-              className="px-6 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 text-white font-bold shadow-lg hover:scale-105 transition"
-            >
-              Login
-            </Link>
-            <Link
-              href="/register"
-              className="px-6 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 text-white font-bold shadow-lg hover:scale-105 transition"
-            >
-              Register
-            </Link>
-
-            <a
-              href="#appointment"
-              className="mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white font-bold shadow-[0_0_30px_rgba(59,130,246,0.9)] hover:shadow-[0_0_45px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
-            >
-              Book Appointment
-            </a>
+            {/* ✅ Mobile Auth */}
+            {!session ? (
+              <>
+                <a
+                  href="/login"
+                  className="mt-4 px-6 py-3 rounded-full bg-cyan-400 text-white font-bold shadow-lg hover:scale-105 transition"
+                >
+                  Login
+                </a>
+                <a
+                  href="/register"
+                  className="mt-2 px-6 py-3 rounded-full bg-indigo-500 text-white font-bold shadow-lg hover:scale-105 transition"
+                >
+                  Register
+                </a>
+              </>
+            ) : (
+              <button
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="mt-4 px-6 py-3 rounded-full bg-red-500 text-white font-bold shadow-lg hover:scale-105 transition"
+              >
+                Logout
+              </button>
+            )}
           </ul>
         </div>
       </nav>

@@ -1,4 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import Providers from "./providers"; // ✅ import the SessionProvider wrapper
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,17 +17,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Doctor Appointment System",
-  description: "Book and manage medical appointments easily",
+  title: "Doctors Appointment",
+  description: "Book appointments with doctors easily",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body>
+        <Providers>
+          <Navbar />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
