@@ -59,13 +59,37 @@ export default function About() {
           </motion.p>
 
           <motion.p
-            className="text-gray-300 text-lg md:text-xl leading-relaxed mb-8"
+            className="text-gray-300 text-lg md:text-xl leading-relaxed mb-10"
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
             transition={{ duration: 1 }}
           >
             From preventive care to advanced medical treatments, we focus on delivering 
             premium services that put your health first.
           </motion.p>
+
+          {/* 🔥 Stats Section */}
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10"
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 1 }}
+          >
+            {[
+              { number: "20+", label: "Years of Experience" },
+              { number: "150+", label: "Qualified Doctors" },
+              { number: "100K+", label: "Patients Served" },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                className="flex flex-col items-center md:items-start bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-cyan-400/30 shadow-lg hover:shadow-cyan-500/30 transition-all duration-500 hover:scale-105"
+                whileHover={{ scale: 1.05 }}
+              >
+                <h3 className="text-4xl font-extrabold text-cyan-300 drop-shadow-[0_0_20px_rgba(59,130,246,0.8)]">
+                  {stat.number}
+                </h3>
+                <p className="text-gray-300 mt-2 text-lg">{stat.label}</p>
+              </motion.div>
+            ))}
+          </motion.div>
 
           <motion.a
             href="#services"
