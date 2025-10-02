@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
@@ -11,26 +10,36 @@ export default function Navbar() {
   const [active, setActive] = useState("Home");
   const [progress, setProgress] = useState(0);
 
+  // ✅ Dynamic links (Appointment protected)
   const links = [
     { name: "Home", href: "#home" },
     { name: "About", href: "#about" },
     { name: "Services", href: "#services" },
     { name: "Doctors", href: "#doctors" },
-    { name: "Appointment", href: "#appointment" },
+    { name: "Appointment", href: session ? "/appointment" : "/login" },
     { name: "Blog", href: "#blog" },
     { name: "Contact", href: "#contact" },
   ];
 
+  // ✅ Always scroll to Hero on refresh
   useEffect(() => {
-    if (window.location.hash !== "#home") {
-      window.history.replaceState(null, null, "#home");
-    }
-    const hero = document.querySelector("#home");
-    if (hero) {
-      hero.scrollIntoView({ behavior: "smooth" });
+    if (typeof window !== "undefined") {
+      // Force the hash to #home if not already
+      if (window.location.hash !== "#home") {
+        window.history.replaceState(null, null, "#home");
+      }
+
+      // Smooth scroll into Hero
+      const hero = document.querySelector("#home");
+      if (hero) {
+        setTimeout(() => {
+          hero.scrollIntoView({ behavior: "smooth" });
+        }, 100); // slight delay so DOM is ready
+      }
     }
   }, []);
 
+  // ✅ Handle scroll and progress
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 60);
@@ -40,13 +49,15 @@ export default function Navbar() {
 
       const scrollPos = window.scrollY + 120;
       links.forEach((link) => {
-        const section = document.querySelector(link.href);
-        if (section) {
-          if (
-            scrollPos >= section.offsetTop &&
-            scrollPos < section.offsetTop + section.offsetHeight
-          ) {
-            setActive(link.name);
+        if (link.href.startsWith("#")) {
+          const section = document.querySelector(link.href);
+          if (section) {
+            if (
+              scrollPos >= section.offsetTop &&
+              scrollPos < section.offsetTop + section.offsetHeight
+            ) {
+              setActive(link.name);
+            }
           }
         }
       });
@@ -54,7 +65,7 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [links]);
 
   return (
     <>
@@ -107,18 +118,18 @@ export default function Navbar() {
               ))}
             </ul>
 
-            {/* ✅ Auth Buttons */}
+            {/* Auth Buttons */}
             {!session ? (
               <>
                 <a
                   href="/login"
-                  className="ml-6 px-5 py-2 rounded-full bg-cyan-400 text-white font-bold shadow-lg hover:scale-105 transition"
+                  className="ml-4 px-5 py-2 rounded-full bg-cyan-500 text-white font-bold shadow hover:scale-105 transition"
                 >
                   Login
                 </a>
                 <a
                   href="/register"
-                  className="ml-3 px-5 py-2 rounded-full bg-indigo-500 text-white font-bold shadow-lg hover:scale-105 transition"
+                  className="ml-2 px-5 py-2 rounded-full bg-indigo-500 text-white font-bold shadow hover:scale-105 transition"
                 >
                   Register
                 </a>
@@ -126,7 +137,7 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="ml-6 px-5 py-2 rounded-full bg-red-500 text-white font-bold shadow-lg hover:scale-105 transition"
+                className="ml-6 px-5 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-600 text-white font-bold shadow hover:scale-105 transition"
               >
                 Logout
               </button>
@@ -143,54 +154,57 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Menu */}
-        <div
-          className={`md:hidden backdrop-blur-xl bg-gradient-to-br from-blue-900/90 via-cyan-800/90 to-indigo-900/90 shadow-2xl transition-all duration-700 ease-in-out overflow-hidden ${
-            isOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <ul className="flex flex-col items-center px-6 py-8 space-y-6">
-            {links.map((link) => (
-              <li key={link.name}>
-                <a
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`block text-lg font-semibold tracking-wide transition-all ${
-                    active === link.name
-                      ? "text-white drop-shadow-[0_0_10px_rgba(59,130,246,1)]"
-                      : "text-gray-200 hover:text-yellow-200"
-                  }`}
-                >
-                  {link.name}
-                </a>
-              </li>
-            ))}
+        {isOpen && (
+          <div className="md:hidden bg-gradient-to-b from-blue-900 via-cyan-800 to-indigo-900 text-white px-6 py-6 space-y-6 absolute top-full left-0 w-full shadow-xl">
+            <ul className="space-y-6">
+              {links.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    className={`block font-semibold tracking-wide transition-all ${
+                      active === link.name
+                        ? "text-cyan-300 drop-shadow-[0_0_10px_rgba(59,130,246,1)]"
+                        : "text-gray-200 hover:text-yellow-200"
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
 
-            {/* ✅ Mobile Auth */}
+            {/* Auth Buttons (Mobile) */}
             {!session ? (
-              <>
+              <div className="space-y-4">
                 <a
                   href="/login"
-                  className="mt-4 px-6 py-3 rounded-full bg-cyan-400 text-white font-bold shadow-lg hover:scale-105 transition"
+                  className="block w-full text-center px-5 py-2 rounded-full bg-cyan-500 text-white font-bold shadow hover:scale-105 transition"
+                  onClick={() => setIsOpen(false)}
                 >
                   Login
                 </a>
                 <a
                   href="/register"
-                  className="mt-2 px-6 py-3 rounded-full bg-indigo-500 text-white font-bold shadow-lg hover:scale-105 transition"
+                  className="block w-full text-center px-5 py-2 rounded-full bg-indigo-500 text-white font-bold shadow hover:scale-105 transition"
+                  onClick={() => setIsOpen(false)}
                 >
                   Register
                 </a>
-              </>
+              </div>
             ) : (
               <button
-                onClick={() => signOut({ callbackUrl: "/" })}
-                className="mt-4 px-6 py-3 rounded-full bg-red-500 text-white font-bold shadow-lg hover:scale-105 transition"
+                onClick={() => {
+                  setIsOpen(false);
+                  signOut({ callbackUrl: "/" });
+                }}
+                className="block w-full text-center px-5 py-2 rounded-full bg-gradient-to-r from-red-500 to-pink-600 text-white font-bold shadow hover:scale-105 transition"
               >
                 Logout
               </button>
             )}
-          </ul>
-        </div>
+          </div>
+        )}
       </nav>
     </>
   );
