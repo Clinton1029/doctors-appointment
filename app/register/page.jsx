@@ -25,28 +25,17 @@ export default function Register() {
       >
         <h2 className="text-3xl font-bold mb-6 text-center text-cyan-300">Register</h2>
         <form onSubmit={handleSubmit} className="space-y-5">
-          <input
-            type="text"
-            placeholder="Name"
-            className="w-full px-4 py-3 rounded-lg bg-white/20 border border-gray-500 focus:outline-none"
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full px-4 py-3 rounded-lg bg-white/20 border border-gray-500 focus:outline-none"
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full px-4 py-3 rounded-lg bg-white/20 border border-gray-500 focus:outline-none"
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-          />
-          <button
-            type="submit"
-            className="w-full py-3 bg-gradient-to-r from-cyan-400 to-indigo-500 rounded-lg font-bold shadow-lg hover:scale-105 transition"
-          >
+          <input type="text" placeholder="Name"
+            className="w-full px-4 py-3 rounded-lg bg-white/20 border border-gray-500"
+            onChange={(e) => setForm({ ...form, name: e.target.value })}/>
+          <input type="email" placeholder="Email"
+            className="w-full px-4 py-3 rounded-lg bg-white/20 border border-gray-500"
+            onChange={(e) => setForm({ ...form, email: e.target.value })}/>
+          <input type="password" placeholder="Password"
+            className="w-full px-4 py-3 rounded-lg bg-white/20 border border-gray-500"
+            onChange={(e) => setForm({ ...form, password: e.target.value })}/>
+          <button type="submit"
+            className="w-full py-3 bg-gradient-to-r from-cyan-400 to-indigo-500 rounded-lg font-bold shadow-lg hover:scale-105 transition">
             Register
           </button>
         </form>

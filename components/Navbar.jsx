@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +15,6 @@ export default function Navbar() {
     { name: "About", href: "#about" },
     { name: "Services", href: "#services" },
     { name: "Doctors", href: "#doctors" },
-    { name: "Appointment", href: "#appointment" },
     { name: "Blog", href: "#blog" },
     { name: "Contact", href: "#contact" },
   ];
@@ -109,7 +109,23 @@ export default function Navbar() {
               ))}
             </ul>
 
-            {/* CTA Button */}
+            {/* Auth Buttons */}
+            <div className="flex items-center space-x-4 ml-6">
+              <Link
+                href="/login"
+                className="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 text-white font-bold shadow-[0_0_20px_rgba(59,130,246,0.8)] hover:shadow-[0_0_40px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
+              >
+                Login
+              </Link>
+              <Link
+                href="/register"
+                className="px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 text-white font-bold shadow-[0_0_20px_rgba(99,102,241,0.8)] hover:shadow-[0_0_40px_rgba(99,102,241,1)] transition-all duration-500 hover:scale-105"
+              >
+                Register
+              </Link>
+            </div>
+
+            {/* CTA Button (disabled if not logged in later) */}
             <a
               href="#appointment"
               className="ml-6 px-5 py-2 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white font-bold shadow-[0_0_20px_rgba(59,130,246,0.9)] hover:shadow-[0_0_35px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
@@ -149,6 +165,21 @@ export default function Navbar() {
                 </a>
               </li>
             ))}
+
+            {/* Auth buttons (mobile) */}
+            <Link
+              href="/login"
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-indigo-500 text-white font-bold shadow-lg hover:scale-105 transition"
+            >
+              Login
+            </Link>
+            <Link
+              href="/register"
+              className="px-6 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 text-white font-bold shadow-lg hover:scale-105 transition"
+            >
+              Register
+            </Link>
+
             <a
               href="#appointment"
               className="mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 text-white font-bold shadow-[0_0_30px_rgba(59,130,246,0.9)] hover:shadow-[0_0_45px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
