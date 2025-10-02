@@ -13,7 +13,7 @@ export default function Hero() {
   // Typewriter effect
   useEffect(() => {
     if (subIndex === phrases[index].length + 1 && !deleting) {
-      setTimeout(() => setDeleting(true), 1800); // pause before deleting
+      setTimeout(() => setDeleting(true), 1800);
       return;
     }
     if (subIndex === 0 && deleting) {
@@ -24,7 +24,7 @@ export default function Hero() {
     const timeout = setTimeout(() => {
       setSubIndex((prev) => prev + (deleting ? -1 : 1));
       setDisplayText(phrases[index].substring(0, subIndex));
-    }, deleting ? 120 : 200); // slower typing for premium feel
+    }, deleting ? 120 : 200);
     return () => clearTimeout(timeout);
   }, [subIndex, index, deleting, phrases]);
 
@@ -33,7 +33,7 @@ export default function Hero() {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-r from-blue-950 via-cyan-900 to-indigo-950"
     >
-      {/* Background floating glow blobs */}
+      {/* Background glowing blobs */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
           className="w-[600px] h-[600px] bg-cyan-400/20 rounded-full blur-3xl absolute -top-40 -left-40"
@@ -47,13 +47,23 @@ export default function Hero() {
         />
       </div>
 
-      {/* Content Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col-reverse md:flex-row items-center gap-12 md:gap-24 pt-28 md:pt-0">
+      {/* Content Container with stagger animation */}
+      <motion.div
+        className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col-reverse md:flex-row items-center gap-12 md:gap-24 pt-28 md:pt-0"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.3, delayChildren: 0.2 },
+          },
+        }}
+      >
         {/* Left Text Column */}
         <motion.div
           className="flex-1 text-center md:text-left"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
+          variants={{ hidden: { opacity: 0, x: -50 }, visible: { opacity: 1, x: 0 } }}
           transition={{ duration: 1 }}
         >
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight drop-shadow-[0_0_25px_rgba(59,130,246,0.7)]">
@@ -63,13 +73,22 @@ export default function Hero() {
               <span className="animate-pulse">|</span>
             </span>
           </h1>
-          <p className="mt-6 text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed">
+
+          <motion.p
+            className="mt-6 text-lg md:text-xl text-gray-200 max-w-xl leading-relaxed"
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 1 }}
+          >
             Experience world-class healthcare with advanced technology, modern
             facilities, and dedicated medical experts focused on your well-being.
-          </p>
+          </motion.p>
 
           {/* CTA Buttons */}
-          <div className="mt-8 flex flex-wrap justify-center md:justify-start gap-6">
+          <motion.div
+            className="mt-8 flex flex-wrap justify-center md:justify-start gap-6"
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 1 }}
+          >
             <motion.a
               href="#appointment"
               className="px-8 py-3 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 font-semibold text-white shadow-[0_0_25px_rgba(59,130,246,0.8)] hover:shadow-[0_0_50px_rgba(59,130,246,1)] transition-all duration-500 hover:scale-105"
@@ -86,25 +105,24 @@ export default function Hero() {
             >
               Learn More
             </motion.a>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Right Image Column */}
         <motion.div
           className="flex-1 relative"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
+          variants={{ hidden: { opacity: 0, x: 50 }, visible: { opacity: 1, x: 0 } }}
           transition={{ duration: 1 }}
         >
           <motion.img
             src="/gallery6.png"
             alt="Doctor"
             className="w-full max-w-md mx-auto md:mx-0 rounded-xl shadow-2xl object-contain"
-            animate={{ y: [0, -10, 0] }} // subtle floating effect
+            animate={{ y: [0, -10, 0] }}
             transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
           />
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Scroll Down Indicator */}
       <motion.div
