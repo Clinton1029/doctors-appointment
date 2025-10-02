@@ -5,7 +5,7 @@ import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa";
 
 const doctors = [
   { name: "Dr. John Smith", specialty: "Cardiologist", image: "/team1.png" },
-  { name: "Dr. Emily Clark", specialty: "Neurologist", image: "/about1.png" },
+  { name: "Dr. Emily Clark", specialty: "Neurologist", image: "/female doc.jpg" },
   { name: "Dr. Michael Lee", specialty: "Surgeon", image: "/gallery4.png" },
   { name: "Dr. Sarah Johnson", specialty: "Pediatrician", image: "/team3.png" },
 ];
